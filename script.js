@@ -1,10 +1,11 @@
-// Tvinger siden til toppen
+// ===================================================================
+//  INITIALISERING OG GLOBALE VARIABLER
+// ===================================================================
 window.onload = function() {
   window.scrollTo(0, 0);
   lastInnBudsjett();
 };
-console.log("script.js v9 (med Tøm Skjema) er lastet!");
-
+console.log("script.js v11.1 (Error Fix 2) er lastet!");
 let overskuddTilFordeling = 0;
 
 // ===================================================================
@@ -19,7 +20,9 @@ const sparemalBoks = document.getElementById('sparemalListe');
 const alleSlidere = document.querySelectorAll('.fordeling-slider');
 const resterendeProsentSpan = document.getElementById('resterendeProsent');
 const tomSkjemaKnapp = document.getElementById('tomSkjemaKnapp');
-
+const sumFasteSpan = document.getElementById('sumFaste');
+const sumVariableSpan = document.getElementById('sumVariable');
+const sumTotalSpan = document.getElementById('sumTotal');
 
 // ===================================================================
 //  FUNKSJONER
@@ -32,20 +35,13 @@ function tomHeleSkjemaet() {
         location.reload();
     }
 }
-
 function lagreBudsjett() {
-    const data = {
-        inntekt: inntektInput.value,
-        utgifter: [],
-        fordeling: []
-    };
+    const data = { inntekt: inntektInput.value, utgifter: [], fordeling: [] };
     document.querySelectorAll('.utgift-rad').forEach(rad => {
         const checkbox = rad.querySelector('.utgifts-checkbox');
         const input = rad.querySelector('.utgifts-input');
         data.utgifter.push({
-            id: input.id,
-            verdi: input.value,
-            erValgt: checkbox.checked,
+            id: input.id, verdi: input.value, erValgt: checkbox.checked,
             erEgenRad: rad.classList.contains('egen-rad'),
             labelTekst: rad.querySelector('label').textContent
         });
@@ -55,7 +51,6 @@ function lagreBudsjett() {
     });
     localStorage.setItem('okonomikompassBudsjett', JSON.stringify(data));
 }
-
 function lastInnBudsjett() {
     const dataString = localStorage.getItem('okonomikompassBudsjett');
     if (!dataString) return;
@@ -63,8 +58,8 @@ function lastInnBudsjett() {
     inntektInput.value = data.inntekt || '';
     data.utgifter.forEach(utgift => {
         if (utgift.erEgenRad) {
-            const antattListeId = utgift.id.includes('Fast') ? 'utgiftsListe' : 'variabelUtgiftsListe';
-            const listeElement = document.getElementById(antattListeId) || document.querySelector('.input-boks:has(.legg-til-knapp)');
+            const antattListeId = utgift.id.includes('Variabel') ? 'variabelUtgiftsListe' : 'utgiftsListe';
+            const listeElement = document.getElementById(antattListeId) || document.getElementById('utgiftsListe');
             if (listeElement) {
                 leggTilNyUtgiftsrad(listeElement, utgift.labelTekst, utgift.id, utgift.verdi, utgift.erValgt);
             }
@@ -80,9 +75,25 @@ function lastInnBudsjett() {
         const slider = document.getElementById(post.id);
         if (slider) slider.value = post.verdi;
     });
-    beregnKnapp.click();
+    oppdaterOppsummering();
+    beregnOverskudd();
 }
-
+function aktiverCheckboxLytter(checkboxElement) {
+    const targetId = checkboxElement.dataset.target;
+    const tilhorendeInputWrapper = document.getElementById(targetId).parentElement;
+    function toggleVisning() {
+        if (checkboxElement.checked) {
+            tilhorendeInputWrapper.classList.add('vis');
+        } else {
+            tilhorendeInputWrapper.classList.remove('vis');
+            document.getElementById(targetId).value = '';
+        }
+        oppdaterOppsummering();
+        lagreBudsjett();
+    }
+    checkboxElement.addEventListener('change', toggleVisning);
+    toggleVisning();
+}
 function leggTilNyUtgiftsrad(listeElement, tekst = null, id = null, verdi = null, erValgt = true) {
     const radTekst = tekst || prompt("Hva heter den nye utgiftsposten?");
     if (!radTekst || radTekst.trim() === "") return;
@@ -96,27 +107,15 @@ function leggTilNyUtgiftsrad(listeElement, tekst = null, id = null, verdi = null
     nyCheckbox.checked = erValgt;
     nyInput.value = verdi || '';
     aktiverCheckboxLytter(nyCheckbox);
-    nyCheckbox.addEventListener('change', lagreBudsjett);
-    nyInput.addEventListener('input', lagreBudsjett);
-    if (!tekst) {
+    nyInput.addEventListener('input', () => {
+        oppdaterOppsummering();
         lagreBudsjett();
+    });
+    if (!tekst) {
+      lagreBudsjett();
+      oppdaterOppsummering();
     }
 }
-
-function aktiverCheckboxLytter(checkboxElement) {
-    const targetId = checkboxElement.dataset.target;
-    const tilhorendeInputWrapper = document.getElementById(targetId).parentElement;
-    function toggleVisning() {
-        if (checkboxElement.checked) {
-            tilhorendeInputWrapper.classList.add('vis');
-        } else {
-            tilhorendeInputWrapper.classList.remove('vis');
-        }
-    }
-    checkboxElement.addEventListener('change', toggleVisning);
-    toggleVisning();
-}
-
 function beregnOverskudd() {
   const inntektVerdi = parseFloat(inntektInput.value);
   if (isNaN(inntektVerdi)) {
@@ -139,13 +138,13 @@ function beregnOverskudd() {
   resultatVisning.innerHTML = `${resultatMelding}<br><small>${oppfordring}</small>`;
   resultatVisning.style.color = disponibelt >= 0 ? '#28a745' : '#dc3545';
   if (disponibelt > 0) {
+      alleSlidere.forEach(slider => slider.value = 0);
       sparemalBoks.classList.add('vis');
       oppdaterFordeling();
   } else {
       sparemalBoks.classList.remove('vis');
   }
 }
-
 function oppdaterFordeling(endretSlider = null) {
   let totalProsent = 0;
   alleSlidere.forEach(slider => totalProsent += parseInt(slider.value));
@@ -169,30 +168,58 @@ function oppdaterFordeling(endretSlider = null) {
     const verdiWrapper = slider.nextElementSibling;
     verdiWrapper.querySelector('.slider-verdi').textContent = `${prosent}%`;
     verdiWrapper.querySelector('.slider-nok-verdi').textContent = `${kroneVerdi.toFixed(0)} kr`;
+    const oppsummeringSpan = document.querySelector(`.oppsummering-nok-verdi[data-target-slider="${slider.id}"]`);
+    if (oppsummeringSpan) {
+        oppsummeringSpan.textContent = `${kroneVerdi.toFixed(0)} kr`;
+    }
   });
   const resterendeProsent = 100 - totalProsent;
   resterendeProsentSpan.textContent = `${resterendeProsent}%`;
   resterendeProsentSpan.style.color = resterendeProsent === 0 ? '#28a745' : '#007bff';
 }
+function oppdaterOppsummering() {
+  let sumFaste = 0;
+  document.querySelectorAll('#utgiftsListe .utgifts-input').forEach(input => {
+    if (input.parentElement.classList.contains('vis')) {
+      sumFaste += parseFloat(input.value) || 0;
+    }
+  });
+  let sumVariable = 0;
+  document.querySelectorAll('#variabelUtgiftsListe .utgifts-input').forEach(input => {
+    if (input.parentElement.classList.contains('vis')) {
+      sumVariable += parseFloat(input.value) || 0;
+    }
+  });
+  const sumTotal = sumFaste + sumVariable;
+  sumFasteSpan.textContent = `${sumFaste.toFixed(0)} kr`;
+  sumVariableSpan.textContent = `${sumVariable.toFixed(0)} kr`;
+  sumTotalSpan.textContent = `${sumTotal.toFixed(0)} kr`;
+}
 
 // ===================================================================
-//  LYTTERE
+//  LYTTERE (Event Listeners)
 // ===================================================================
-hamburgerKnapp.addEventListener('click', () => {
-  mobilMeny.classList.toggle('apen');
-  hamburgerKnapp.classList.toggle('apen');
-});
+hamburgerKnapp.addEventListener('click', () => { mobilMeny.classList.toggle('apen'); hamburgerKnapp.classList.toggle('apen'); });
 beregnKnapp.addEventListener('click', beregnOverskudd);
 tomSkjemaKnapp.addEventListener('click', tomHeleSkjemaet);
-document.querySelectorAll('.utgifts-checkbox').forEach(aktiverCheckboxLytter);
-document.querySelectorAll('input').forEach(input => {
-    if (input.type !== 'range') {
-        input.addEventListener('input', lagreBudsjett);
-    }
-});
 document.getElementById('leggTilFastUtgift').addEventListener('click', () => leggTilNyUtgiftsrad(document.getElementById('utgiftsListe')));
 document.getElementById('leggTilVariabelUtgift').addEventListener('click', () => leggTilNyUtgiftsrad(document.getElementById('variabelUtgiftsListe')));
+document.querySelectorAll('.utgifts-checkbox:not([id*="custom"])').forEach(aktiverCheckboxLytter);
+
+inntektInput.addEventListener('input', () => {
+    // KORREKSJON: Fjerner feilmelding proaktivt
+    if (resultatVisning.textContent.includes("Vennligst fyll ut inntekt")) {
+        resultatVisning.textContent = '';
+    }
+    lagreBudsjett();
+});
+document.querySelectorAll('.utgifts-input').forEach(input => {
+    input.addEventListener('input', () => {
+        oppdaterOppsummering();
+        lagreBudsjett();
+    });
+});
 alleSlidere.forEach(slider => {
     slider.addEventListener('input', () => oppdaterFordeling(slider));
-    slider.addEventListener('change', lagreBudsjett); // Lagrer kun når man slipper slideren
+    slider.addEventListener('change', lagreBudsjett);
 });
