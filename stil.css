@@ -1,0 +1,383 @@
+/* =================================================================== */
+/*  UNIVERSAL RESET & FONT
+/* =================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* =================================================================== */
+/*  TOPPNAVIGASJON / HEADER (FULL BREDDE)
+/* =================================================================== */
+
+.main-header {
+    /* Posisjonering og Størrelse */
+    position: sticky;
+    top: 5px;
+    z-index: 10;
+    width: 95%;
+    height: 70px;
+    /* Høyden på stripen */
+
+    /* Utseende */
+    background-color: #74c1f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0 40px;
+    /* Styrer luften fra skjermkant til innhold */
+    border-radius: 9999px;
+    width: 95%;
+    /* Litt smalere enn skjermen */
+    max-width: 3648px;
+    /* Satt av meg for å være med opptil 4k*/
+    margin: 0 auto;
+    /* Sentrerer den horisontalt */
+
+    /* Flexbox for å plassere innholdet */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Dytter de to barna til hver sin kant */
+}
+
+/* Tittelen i headeren */
+.header-title {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+
+/* =================================================================== */
+/*  HOVEDLAYOUT
+/* =================================================================== */
+.app-container {
+    max-width: 500px;
+    margin: 40px auto;
+    /* Gir luft mellom header og innhold */
+    padding: 20px;
+}
+
+h1 {
+    color: #005a9c;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* (Resten av koden er den samme) */
+
+/* =================================================================== */
+/*  KOMPONENTER
+/* =================================================================== */
+
+#sparemalListe {
+  display: none; /* Skjult som standard */
+}
+
+#sparemalListe.vis {
+  display: block; /* Vises når klassen er til stede */
+}
+
+.input-boks {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-boks h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.input-boks>label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 20px; /* <-- NY LINJE: Setter en fast skriftstørrelse */
+}
+
+#inntektEtterSkatt {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.utgift-rad {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    min-height: 46px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.utgifts-checkbox {
+    margin-right: 10px;
+}
+
+.input-wrapper {
+    display: none;
+    margin-left: auto;
+}
+
+.input-wrapper.vis {
+    display: block;
+}
+
+.utgifts-input {
+    width: 120px;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    text-align: right;
+}
+
+.legg-til-knapp {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px; /* Luft opp til listen */
+  background: none;
+  border: 2px dashed #ccc; /* Stiplet ramme for å indikere "legg til" */
+  color: #888;
+  font-family: 'Poppins', sans-serif; /* Sørger for at den bruker riktig font */
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.legg-til-knapp:hover {
+  background-color: #f9f9f9;
+  border-color: #aaa;
+  color: #333;
+}
+
+.knappe-container {}
+
+#beregnKnapp {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+#beregnKnapp:hover {
+    background-color: #0056b3;
+}
+
+#beregnKnapp:active {
+    transform: scale(0.98);
+    background-color: #004a99;
+}
+
+.sekundaer-knapp {
+  margin-top: 10px; /* Litt luft opp til den primære knappen */
+  background: none; /* Ingen bakgrunnsfarge */
+  border: 2px solid #ccc; /* En dus grå ramme */
+  color: #555; /* Mørk grå tekst */
+ /* NY LINJE: Legger til luft mellom tekst og ramme */
+  padding: 13px; /* Hovedknappen har 15px, så 13px her ser pent ut */
+
+  /* NY LINJE: Runder av hjørnene, likt som hovedknappen */
+  border-radius: 8px; 
+}
+
+.sekundaer-knapp:hover {
+  background-color: #f0f0f0; /* Lys grå bakgrunn når man holder over */
+  border-color: #aaa;
+}
+
+#resultat {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+/* --- Stil for Hamburger-meny --- */
+.hamburger-meny {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 24px;
+    width: 30px;
+    padding: 0;
+    z-index: 20;
+}
+
+.linje {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger-meny.apen .linje:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-meny.apen .linje:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-meny.apen .linje:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* --- Stil for selve meny-panelet --- */
+.mobil-meny {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 280px;
+    background-color: #f5f5f5;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 80px 20px 20px 20px;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.3s ease-in-out, visibility 0.3s;
+}
+
+.mobil-meny.apen {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.mobil-meny a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 15px 0;
+}
+
+/* stil.css */
+.resterende-wrapper {
+  text-align: center;
+  margin-bottom: 25px; /* God avstand ned til sliderne */
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee; /* En subtil skillelinje */
+}
+
+#resterendeProsent {
+  font-size: 24px;
+  font-weight: 700; /* Bold */
+  color: #007bff; /* Samme blåfarge som knappen */
+  margin-left: 10px;
+}
+
+/* --- Stil for fordelings-sliderne --- */
+.slider-rad {
+  display: grid;
+  /* Justert for å gi mer plass til verdiene */
+  grid-template-columns: 1fr 2fr 80px; 
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.slider-rad label {
+  font-weight: normal;
+  font-size: 15px; /* Litt mindre tekst for å få plass */
+}
+
+/* NY: Wrapper for prosent og kroner */
+.verdi-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.slider-verdi {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* NY: Stil for kronebeløpet */
+.slider-nok-verdi {
+  font-size: 12px;
+  color: #666; /* En litt lysere gråfarge */
+}
+
+/* Felles stil for alle slidere */
+.fordeling-slider {
+  -webkit-appearance: none; /* Fjerner standard utseende på Webkit (Chrome/Safari) */
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #ddd; /* Fargen på sporet */
+  outline: none;
+  border-radius: 5px;
+}
+
+/* Stil for "håndtaket" på slideren (for Chrome/Safari) */
+.fordeling-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #007bff; /* Samme blåfarge som knappen */
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* Stil for "håndtaket" på slideren (for Firefox) */
+.fordeling-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+}
+
+/* =================================================================== */
+/*  INNLASTINGSANIMASJONER
+/* =================================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-container {
+    animation-name: fadeInUp;
+    animation-duration: 0.7s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-out;
+    animation-delay: 0.2s;
+}

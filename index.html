@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Økonomikompasset</title>
+    <link rel="stylesheet" href="stil.css">
+</head>
+
+<body>
+
+    <header class="main-header">
+        <h2 class="header-title">Økonomikompasset</h2>
+        <button class="hamburger-meny" id="hamburgerKnapp">
+            <span class="linje"></span>
+            <span class="linje"></span>
+            <span class="linje"></span>
+        </button>
+    </header>
+
+    <div class="app-container">
+        <h1>Få kontroll. Sett din kurs.</h1>
+
+        <!-- Boks for inntekt -->
+        <div class="input-boks">
+            <label for="inntektEtterSkatt">Inntekt etter skatt</label>
+            <input type="number" id="inntektEtterSkatt" placeholder="f.eks. 35000">
+        </div>
+
+        <!-- Boks for faste utgifter -->
+        <div class="input-boks" id="utgiftsListe">
+            <h3>Velg dine faste utgifter</h3>
+            <!-- ... alle 8 faste utgifter ... -->
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkHusleie" class="utgifts-checkbox"
+                        data-target="utgiftHusleie"><label for="checkHusleie">Husleie / Boliglån</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftHusleie" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkBillan" class="utgifts-checkbox"
+                        data-target="utgiftBillan"><label for="checkBillan">Billån</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftBillan" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkForbrukslan" class="utgifts-checkbox"
+                        data-target="utgiftForbrukslan"><label for="checkForbrukslan">Forbrukslån</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftForbrukslan" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkLanekassen" class="utgifts-checkbox"
+                        data-target="utgiftLanekassen"><label for="checkLanekassen">Lånekassen</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftLanekassen" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+
+            <!-- NY POST: Barnehage -->
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkBarnehage" class="utgifts-checkbox" data-target="utgiftBarnehage">
+                    <label for="checkBarnehage">Barnehage</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="utgiftBarnehage" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+
+            <!-- NY POST: SFO -->
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkSfo" class="utgifts-checkbox" data-target="utgiftSfo">
+                    <label for="checkSfo">SFO</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="utgiftSfo" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+
+            <!-- NY POST: Kommunale avgifter -->
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkKommunale" class="utgifts-checkbox" data-target="utgiftKommunale">
+                    <label for="checkKommunale">Kommunale avgifter</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="utgiftKommunale" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkForsikring" class="utgifts-checkbox"
+                        data-target="utgiftForsikring"><label for="checkForsikring">Forsikringer (Sum)</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftForsikring" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkInternett" class="utgifts-checkbox"
+                        data-target="utgiftInternett"><label for="checkInternett">Internett</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftInternett" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkTv" class="utgifts-checkbox"
+                        data-target="utgiftTv"><label for="checkTv">TV</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftTv" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkMobil" class="utgifts-checkbox"
+                        data-target="utgiftMobil"><label for="checkMobil">Mobil</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftMobil" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+
+            <!-- NY KNAPP FOR Å LEGGE TIL EGEN UTGIFT -->
+            <button class="legg-til-knapp" id="leggTilFastUtgift">
+                + Legg til egen utgift
+            </button>
+
+        </div>
+
+        <!-- Boks for variable utgifter -->
+        <div class="input-boks" id="variabelUtgiftsListe">
+            <h3>Velg dine variable utgifter</h3>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkMat" class="utgifts-checkbox"
+                        data-target="utgiftMat"><label for="checkMat">Mat</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftMat" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkHusholdning" class="utgifts-checkbox"
+                        data-target="utgiftHusholdning"><label for="checkHusholdning">Husholdningsartikler</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftHusholdning" class="utgifts-input"
+                        placeholder="0"></div>
+            </div>
+            <div class="utgift-rad">
+                <div class="checkbox-wrapper"><input type="checkbox" id="checkStrom" class="utgifts-checkbox"
+                        data-target="utgiftStrom"><label for="checkStrom">Strøm</label></div>
+                <div class="input-wrapper"><input type="number" id="utgiftStrom" class="utgifts-input" placeholder="0">
+                </div>
+            </div>
+
+            <!-- NY KNAPP FOR Å LEGGE TIL EGEN UTGIFT -->
+            <button class="legg-til-knapp" id="leggTilVariabelUtgift">
+                + Legg til egen utgift
+            </button>
+
+        </div>
+
+        <!-- Knappen for å starte beregningen -->
+        <div class="knappe-container">
+            <button id="beregnKnapp">Beregn overskudd</button>
+            <!-- NY KNAPP FOR Å TØMME SKJEMAET -->
+            <button id="tomSkjemaKnapp" class="sekundaer-knapp">Tøm skjema</button>
+        </div>
+
+        <!-- Området for resultat og oppfordring -->
+        <h2 id="resultat"></h2>
+
+        <!-- Boks for sparing og fordeling (vil bli vist av JavaScript) -->
+        <div class="input-boks" id="sparemalListe">
+            <h3>Fordel ditt overskudd</h3>
+            <div class="resterende-wrapper">
+                <span>Resterende å fordele:</span>
+                <span id="resterendeProsent">100%</span>
+            </div>
+
+            <div class="slider-rad">
+                <label for="sliderKortPersonlig">Kortsiktig (Personlig)</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+            <div class="slider-rad">
+                <label for="sliderLangPersonlig">Langsiktig (Personlig)</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+            <div class="slider-rad">
+                <label for="sliderKortFamilie">Kortsiktig (Familie)</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+            <div class="slider-rad">
+                <label for="sliderLangFamilie">Langsiktig (Familie)</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+            <div class="slider-rad">
+                <label for="sliderBuffer">Buffer</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+            <div class="slider-rad">
+                <label for="sliderGjeld">Ekstra nedb. gjeld</label>
+                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                <div class="verdi-wrapper"> <!-- NY WRAPPER -->
+                    <span class="slider-verdi">0%</span>
+                    <span class="slider-nok-verdi">0 kr</span> <!-- NY SPAN FOR KRONER -->
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- app-container slutter her -->
+
+    <nav class="mobil-meny" id="mobilMeny">
+        <a href="#">Ofte stilte spørsmål</a>
+        <a href="#">Om oss</a>
+    </nav>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
