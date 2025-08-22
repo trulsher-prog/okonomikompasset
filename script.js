@@ -4,8 +4,9 @@
 window.onload = function () {
     window.scrollTo(0, 0);
     lastInnBudsjett();
+    document.getElementById('visKalenderKnapp').style.display = 'none';
 };
-console.log("script.js v17 (FINAL LocalStorage Fix) er lastet!");
+console.log("script.js v20.1 (Scroll Lock Fix) er lastet!");
 let overskuddTilFordeling = 0;
 let aktivUtgiftForPeriodisering = null;
 let forfallsData = {};
@@ -41,6 +42,11 @@ const lukkPeriodeKnapp = document.getElementById('lukkPeriodeKnapp');
 const lagrePeriodeKnapp = document.getElementById('lagrePeriodeKnapp');
 const manedsvelgerContainer = document.getElementById('manedsvelger');
 const periodeUtgiftNavnSpan = document.getElementById('periodeUtgiftNavn');
+const genererKalenderKnapp = document.getElementById('genererKalenderKnapp');
+const kalenderGridWrapper = document.getElementById('kalenderGridWrapper');
+const kalenderGrid = document.getElementById('kalenderGrid');
+const manedVelger = document.getElementById('manedVelger');
+const aarVelger = document.getElementById('aarVelger');
 
 // ===================================================================
 //  FUNKSJONER
@@ -98,9 +104,7 @@ function lagreBudsjett() {
         const input = rad.querySelector('.utgifts-input');
         if (input && checkbox) {
             data.utgifter.push({
-                id: input.id,
-                verdi: input.value,
-                erValgt: checkbox.checked,
+                id: input.id, verdi: input.value, erValgt: checkbox.checked,
                 erEgenRad: rad.classList.contains('egen-rad'),
                 labelTekst: rad.querySelector('label').textContent
             });
@@ -148,21 +152,15 @@ function lastInnBudsjett() {
 function aktiverCheckboxLytter(checkboxElement) {
     const targetId = checkboxElement.dataset.target;
     const tilhorendeInputWrapper = document.getElementById(targetId).parentElement;
-    
     function toggleVisning() {
-        if (checkboxElement.checked) {
-            tilhorendeInputWrapper.classList.add('vis');
-        } else {
-            tilhorendeInputWrapper.classList.remove('vis');
-        }
+        if (checkboxElement.checked) { tilhorendeInputWrapper.classList.add('vis'); }
+        else { tilhorendeInputWrapper.classList.remove('vis'); }
     }
-    
     checkboxElement.addEventListener('change', () => {
         toggleVisning();
         oppdaterOppsummering();
         lagreBudsjett();
     });
-
     toggleVisning();
 }
 
@@ -172,25 +170,15 @@ function leggTilNyUtgiftsrad(listeElement, tekst = null, id = null, verdi = null
     const unikId = id || "input-custom-" + Date.now();
     const checkboxId = "check-" + unikId.replace('input-', '');
     const nyRadHTML = `<div class="utgift-rad egen-rad"><div class="checkbox-wrapper"><input type="checkbox" id="${checkboxId}" class="utgifts-checkbox" data-target="${unikId}"><label for="${checkboxId}">${radTekst}</label></div><div class="input-wrapper"><input type="number" id="${unikId}" class="utgifts-input" placeholder="0"></div></div>`;
-    
     const knapp = listeElement.querySelector('.legg-til-knapp');
     knapp.insertAdjacentHTML('beforebegin', nyRadHTML);
-    
     const nyCheckbox = document.getElementById(checkboxId);
     const nyInput = document.getElementById(unikId);
     nyCheckbox.checked = erValgt;
     nyInput.value = verdi || '';
-    
     aktiverCheckboxLytter(nyCheckbox);
-    nyInput.addEventListener('input', () => {
-        oppdaterOppsummering();
-        lagreBudsjett();
-    });
-
-    if (!tekst) {
-      lagreBudsjett();
-      oppdaterOppsummering();
-    }
+    nyInput.addEventListener('input', () => { oppdaterOppsummering(); lagreBudsjett(); });
+    if (!tekst) { lagreBudsjett(); oppdaterOppsummering(); }
 }
 
 function beregnOverskudd(erManuellBeregning = false) {
@@ -205,9 +193,7 @@ function beregnOverskudd(erManuellBeregning = false) {
     let totalUtgifter = 0;
     document.querySelectorAll('.utgifts-input').forEach(input => {
         const wrapper = input.parentElement;
-        if (wrapper.classList.contains('vis')) {
-            totalUtgifter += parseFloat(input.value) || 0;
-        }
+        if (wrapper.classList.contains('vis')) { totalUtgifter += parseFloat(input.value) || 0; }
     });
     const disponibelt = inntektVerdi - totalUtgifter;
     overskuddTilFordeling = disponibelt > 0 ? disponibelt : 0;
@@ -216,9 +202,7 @@ function beregnOverskudd(erManuellBeregning = false) {
     resultatVisning.innerHTML = `${resultatMelding}<br><small>${oppfordring}</small>`;
     resultatVisning.style.color = disponibelt >= 0 ? '#28a745' : '#dc3545';
     if (disponibelt > 0) {
-        if (erManuellBeregning) {
-            alleSlidere.forEach(slider => slider.value = 0);
-        }
+        if (erManuellBeregning) { alleSlidere.forEach(slider => slider.value = 0); }
         sparemalBoks.classList.add('vis');
         visKalenderKnapp.style.display = 'block';
         oppdaterFordeling();
@@ -229,49 +213,49 @@ function beregnOverskudd(erManuellBeregning = false) {
 }
 
 function oppdaterFordeling(endretSlider = null) {
-  let totalProsent = 0;
-  alleSlidere.forEach(slider => totalProsent += parseInt(slider.value));
-  if (totalProsent > 100 && endretSlider) {
-    let overskuddProsent = totalProsent - 100;
-    const andreSlidere = Array.from(alleSlidere).filter(s => s !== endretSlider && parseInt(s.value) > 0);
-    while (overskuddProsent > 0 && andreSlidere.length > 0) {
-      let reduksjonPerSlider = Math.ceil(overskuddProsent / andreSlidere.length);
-      for (let i = 0; i < andreSlidere.length && overskuddProsent > 0; i++) {
-        let slider = andreSlidere[i];
-        let faktiskReduksjon = Math.min(parseInt(slider.value), reduksjonPerSlider, overskuddProsent);
-        slider.value = parseInt(slider.value) - faktiskReduksjon;
-        overskuddProsent -= faktiskReduksjon;
-      }
+    let totalProsent = 0;
+    alleSlidere.forEach(slider => totalProsent += parseInt(slider.value));
+    if (totalProsent > 100 && endretSlider) {
+        let overskuddProsent = totalProsent - 100;
+        const andreSlidere = Array.from(alleSlidere).filter(s => s !== endretSlider && parseInt(s.value) > 0);
+        while (overskuddProsent > 0 && andreSlidere.length > 0) {
+            let reduksjonPerSlider = Math.ceil(overskuddProsent / andreSlidere.length);
+            for (let i = 0; i < andreSlidere.length && overskuddProsent > 0; i++) {
+                let slider = andreSlidere[i];
+                let faktiskReduksjon = Math.min(parseInt(slider.value), reduksjonPerSlider, overskuddProsent);
+                slider.value = parseInt(slider.value) - faktiskReduksjon;
+                overskuddProsent -= faktiskReduksjon;
+            }
+        }
+        totalProsent = 100;
     }
-    totalProsent = 100;
-  }
-  alleSlidere.forEach(slider => {
-    const prosent = parseInt(slider.value);
-    const kroneVerdi = (prosent / 100) * overskuddTilFordeling;
-    const verdiWrapper = slider.nextElementSibling;
-    verdiWrapper.querySelector('.slider-verdi').textContent = `${prosent}%`;
-    verdiWrapper.querySelector('.slider-nok-verdi').textContent = `${kroneVerdi.toFixed(0)} kr`;
-    const oppsummeringSpan = document.querySelector(`.oppsummering-nok-verdi[data-target-slider="${slider.id}"]`);
-    if (oppsummeringSpan) { oppsummeringSpan.textContent = `${kroneVerdi.toFixed(0)} kr`; }
-  });
-  const resterendeProsent = 100 - totalProsent;
-  resterendeProsentSpan.textContent = `${resterendeProsent}%`;
-  resterendeProsentSpan.style.color = resterendeProsent === 0 ? '#28a745' : '#007bff';
+    alleSlidere.forEach(slider => {
+        const prosent = parseInt(slider.value);
+        const kroneVerdi = (prosent / 100) * overskuddTilFordeling;
+        const verdiWrapper = slider.nextElementSibling;
+        verdiWrapper.querySelector('.slider-verdi').textContent = `${prosent}%`;
+        verdiWrapper.querySelector('.slider-nok-verdi').textContent = `${kroneVerdi.toFixed(0)} kr`;
+        const oppsummeringSpan = document.querySelector(`.oppsummering-nok-verdi[data-target-slider="${slider.id}"]`);
+        if (oppsummeringSpan) { oppsummeringSpan.textContent = `${kroneVerdi.toFixed(0)} kr`; }
+    });
+    const resterendeProsent = 100 - totalProsent;
+    resterendeProsentSpan.textContent = `${resterendeProsent}%`;
+    resterendeProsentSpan.style.color = resterendeProsent === 0 ? '#28a745' : '#007bff';
 }
 
 function oppdaterOppsummering() {
-  let sumFaste = 0;
-  document.querySelectorAll('#utgiftsListe .utgifts-input').forEach(input => {
-    if (input.parentElement.classList.contains('vis')) { sumFaste += parseFloat(input.value) || 0; }
-  });
-  let sumVariable = 0;
-  document.querySelectorAll('#variabelUtgiftsListe .utgifts-input').forEach(input => {
-    if (input.parentElement.classList.contains('vis')) { sumVariable += parseFloat(input.value) || 0; }
-  });
-  const sumTotal = sumFaste + sumVariable;
-  sumFasteSpan.textContent = `${sumFaste.toFixed(0)} kr`;
-  sumVariableSpan.textContent = `${sumVariable.toFixed(0)} kr`;
-  sumTotalSpan.textContent = `${sumTotal.toFixed(0)} kr`;
+    let sumFaste = 0;
+    document.querySelectorAll('#utgiftsListe .utgifts-input').forEach(input => {
+        if (input.parentElement.classList.contains('vis')) { sumFaste += parseFloat(input.value) || 0; }
+    });
+    let sumVariable = 0;
+    document.querySelectorAll('#variabelUtgiftsListe .utgifts-input').forEach(input => {
+        if (input.parentElement.classList.contains('vis')) { sumVariable += parseFloat(input.value) || 0; }
+    });
+    const sumTotal = sumFaste + sumVariable;
+    sumFasteSpan.textContent = `${sumFaste.toFixed(0)} kr`;
+    sumVariableSpan.textContent = `${sumVariable.toFixed(0)} kr`;
+    sumTotalSpan.textContent = `${sumTotal.toFixed(0)} kr`;
 }
 
 function byggForfallsliste() {
@@ -295,14 +279,14 @@ function byggForfallsliste() {
         }
     });
     document.querySelectorAll('.periodisering-knapp').forEach(knapp => {
-        knapp.addEventListener('click', function() {
+        knapp.addEventListener('click', function () {
             const utgiftId = this.dataset.targetUtgift;
             const utgiftNavn = this.closest('.forfall-rad').querySelector('.forfall-label').childNodes[0].nodeValue.trim();
             aapnePeriodiseringModal(utgiftId, utgiftNavn);
         });
     });
     document.querySelectorAll('.forfall-dato-input').forEach(input => {
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             const utgiftId = this.id.replace('forfall-', '');
             if (!forfallsData[utgiftId]) { forfallsData[utgiftId] = {}; }
             forfallsData[utgiftId].dag = this.value;
@@ -324,6 +308,7 @@ function aapnePeriodiseringModal(utgiftId, utgiftNavn) {
         manedsvelgerContainer.insertAdjacentHTML('beforeend', checkboxHTML);
     });
     periodeOverlay.classList.add('vis');
+    document.body.classList.add('scroll-lock'); // LÅS SCROLL
 }
 
 function lagrePeriodisering() {
@@ -334,6 +319,7 @@ function lagrePeriodisering() {
     forfallsData[aktivUtgiftForPeriodisering].maneder = valgteManeder;
     oppdaterPeriodeVisning(aktivUtgiftForPeriodisering);
     periodeOverlay.classList.remove('vis');
+    document.body.classList.remove('scroll-lock'); // LÅS OPP SCROLL
     lagreBudsjett();
 }
 
@@ -352,37 +338,96 @@ function oppdaterPeriodeVisning(utgiftId) {
     }
 }
 
+function fyllUtDatovelgere() {
+    const maneder = ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"];
+    const naa = new Date();
+    const currentAar = naa.getFullYear();
+    const currentManed = naa.getMonth();
+    manedVelger.innerHTML = '';
+    maneder.forEach((maned, index) => {
+        const option = new Option(maned, index);
+        if (index === currentManed) { option.selected = true; }
+        manedVelger.add(option);
+    });
+    aarVelger.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+        const aar = currentAar + i;
+        const option = new Option(aar, aar);
+        aarVelger.add(option);
+    }
+}
+
+function genererKalender(aar, maned) {
+    kalenderGrid.innerHTML = '';
+    const forsteDagIManeden = new Date(aar, maned, 1).getDay();
+    const dagerIManeden = new Date(aar, maned + 1, 0).getDate();
+    const startOffset = forsteDagIManeden === 0 ? 6 : forsteDagIManeden - 1;
+    const ukedager = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+    ukedager.forEach(dag => {
+        kalenderGrid.insertAdjacentHTML('beforeend', `<div class="kalender-dag ukedag">${dag}</div>`);
+    });
+    for (let i = 0; i < startOffset; i++) {
+        kalenderGrid.insertAdjacentHTML('beforeend', '<div class="kalender-dag tom"></div>');
+    }
+    for (let dag = 1; dag <= dagerIManeden; dag++) {
+        let hendelserHTML = '';
+        const inntektData = forfallsData['inntekt'];
+        if (inntektData && parseInt(inntektData.dag) === dag) {
+            if ((inntektData.maneder === undefined || inntektData.maneder.length === 12 || inntektData.maneder.includes(maned))) {
+                hendelserHTML += `<div class="hendelse inntekt">Lønn</div>`;
+            }
+        }
+        document.querySelectorAll('.utgifts-input').forEach(input => {
+            if (input.parentElement.classList.contains('vis')) {
+                const utgiftId = input.id;
+                const data = forfallsData[utgiftId];
+                if (data && parseInt(data.dag) === dag) {
+                    const gjelderDenneManed = (data.maneder === undefined || data.maneder.length === 12 || data.maneder.includes(maned));
+                    if (gjelderDenneManed) {
+                        const labelTekst = input.closest('.utgift-rad').querySelector('label').textContent;
+                        hendelserHTML += `<div class="hendelse utgift">${labelTekst}</div>`;
+                    }
+                }
+            }
+        });
+        const dagHTML = `<div class="kalender-dag"><div class="dag-nummer">${dag}</div><div class="hendelser-liste">${hendelserHTML}</div></div>`;
+        kalenderGrid.insertAdjacentHTML('beforeend', dagHTML);
+    }
+    kalenderGridWrapper.classList.add('vis');
+}
+
 // ===================================================================
 //  LYTTERE
 // ===================================================================
-hamburgerKnapp.addEventListener('click', () => { mobilMeny.classList.toggle('apen'); hamburgerKnapp.classList.toggle('apen'); });
+hamburgerKnapp.addEventListener('click', () => {
+    mobilMeny.classList.toggle('apen');
+    hamburgerKnapp.classList.toggle('apen');
+    document.body.classList.toggle('scroll-lock');
+});
 beregnKnapp.addEventListener('click', () => beregnOverskudd(true));
 tomSkjemaKnapp.addEventListener('click', tomHeleSkjemaet);
 document.getElementById('leggTilFastUtgift').addEventListener('click', () => leggTilNyUtgiftsrad(document.getElementById('utgiftsListe')));
 document.getElementById('leggTilVariabelUtgift').addEventListener('click', () => leggTilNyUtgiftsrad(document.getElementById('variabelUtgiftsListe')));
 document.querySelectorAll('.utgifts-checkbox:not([id*="custom"])').forEach(aktiverCheckboxLytter);
-
-// Enkel og robust lytter for alle input-felter
-document.querySelectorAll('input[type="number"]').forEach(input => {
+inntektInput.addEventListener('input', () => {
+    if (resultatVisning.textContent.includes("Vennligst fyll ut inntekt")) { resultatVisning.textContent = ''; }
+    oppdaterOppsummering();
+    lagreBudsjett();
+});
+document.querySelectorAll('.utgifts-input').forEach(input => {
     input.addEventListener('input', () => {
-        if (input.id === 'inntektEtterSkatt' && resultatVisning.textContent.includes("Vennligst fyll ut inntekt")) {
-            resultatVisning.textContent = '';
-        }
         oppdaterOppsummering();
         lagreBudsjett();
     });
 });
-
-document.querySelectorAll('.utgifts-input').forEach(input => {
+alleUtgiftsInput.forEach(input => {
     input.addEventListener('focus', () => oppdaterDetaljPanel(input.id));
 });
-
 alleSlidere.forEach(slider => {
     slider.addEventListener('focus', () => oppdaterInfoPanel(slider.id));
     slider.addEventListener('input', () => oppdaterFordeling(slider));
     slider.addEventListener('change', lagreBudsjett);
 });
-
 summerForsikringKnapp.addEventListener('click', function () {
     let forsikringSum = 0;
     alleForsikringsInput.forEach(input => forsikringSum += parseFloat(input.value) || 0);
@@ -390,21 +435,32 @@ summerForsikringKnapp.addEventListener('click', function () {
     forsikringHovedInput.dispatchEvent(new Event('input'));
     detaljPanel.classList.remove('vis');
 });
-
 visKalenderKnapp.addEventListener('click', () => {
     byggForfallsliste();
+    fyllUtDatovelgere();
+    genererKalenderKnapp.click();
     kalenderOverlay.classList.add('vis');
+    document.body.classList.add('scroll-lock');
 });
-
 lukkKalenderKnapp.addEventListener('click', () => {
     kalenderOverlay.classList.remove('vis');
+    document.body.classList.remove('scroll-lock');
 });
-
 kalenderOverlay.addEventListener('click', (event) => {
     if (event.target === kalenderOverlay) {
         kalenderOverlay.classList.remove('vis');
+        document.body.classList.remove('scroll-lock');
     }
 });
-
-lukkPeriodeKnapp.addEventListener('click', () => periodeOverlay.classList.remove('vis'));
+lukkPeriodeKnapp.addEventListener('click', () => {
+    periodeOverlay.classList.remove('vis');
+    document.body.classList.remove('scroll-lock');
+});
 lagrePeriodeKnapp.addEventListener('click', lagrePeriodisering);
+genererKalenderKnapp.addEventListener('click', () => {
+    const valgtAar = parseInt(aarVelger.value);
+    const valgtManed = parseInt(manedVelger.value);
+    genererKalender(valgtAar, valgtManed);
+});
+manedVelger.addEventListener('change', () => genererKalenderKnapp.click());
+aarVelger.addEventListener('change', () => genererKalenderKnapp.click());

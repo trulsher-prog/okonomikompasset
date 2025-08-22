@@ -9,7 +9,6 @@
 
 <body>
     <header class="main-header">
-        <!-- NY LOGO-WRAPPER -->
         <a href="#" class="logo-wrapper">
             <img src="logo.svg" alt="Økonomikompasset logo" class="header-logo">
             <span class="logo-tekst">Økonomikompasset</span>
@@ -238,37 +237,45 @@
                 <button class="lukk-knapp" id="lukkKalenderKnapp">&times;</button>
             </header>
             <div class="kalender-innhold">
-                <p class="kalender-intro">
-                    Snart klar! Legg inn forfallsdato for dine faste inntekter og utgifter.
-                </p>
-
-                <div class="forfall-liste" id="forfallListe">
-                    <!-- Forfallsrader vil bli generert her av JavaScript -->
+                <p class="kalender-intro">Snart klar! Legg inn forfallsdato for dine faste inntekter og utgifter.</p>
+                <div class="forfall-liste" id="forfallListe"></div>
+                <!-- NY KNAPP FOR Å GENERERE KALENDER -->
+                <div class="kalender-handlinger">
+                    <button class="primar-knapp" id="genererKalenderKnapp">
+                        Vis i kalender
+                    </button>
+                </div>
+                <div class="navigasjons-kontroller">
+                    <select id="manedVelger"></select>
+                    <select id="aarVelger"></select>
                 </div>
 
             </div>
 
-            <div class="kalender-grid" id="kalenderGrid">
-                <!-- Kalenderen kommer senere -->
-            </div>
-        </div>
-        <!-- NYTT OVERLAY FOR PERIODISERING -->
-        <div class="overlay" id="periodeOverlay">
-            <div class="modal-container">
-                <header class="modal-header">
-                    <h3>Velg måneder for <span id="periodeUtgiftNavn"></span></h3>
-                    <button class="lukk-knapp" id="lukkPeriodeKnapp">&times;</button>
-                </header>
-                <div class="modal-innhold" id="manedsvelger">
-                    <!-- Måneds-checkboxer vil bli generert her -->
+            <!-- Kalender-griden (skjult som standard) -->
+            <div class="kalender-grid-wrapper" id="kalenderGridWrapper">
+                <div class="kalender-grid" id="kalenderGrid">
+                    <!-- Kalenderdager vil bli generert her -->
                 </div>
-                <footer class="modal-footer">
-                    <button class="primar-knapp" id="lagrePeriodeKnapp">Lagre</button>
-                </footer>
             </div>
         </div>
-
+        <div class="kalender-grid" id="kalenderGrid"></div>
     </div>
+    </div>
+
+    <div class="overlay" id="periodeOverlay">
+        <div class="modal-container">
+            <header class="modal-header">
+                <h3>Velg måneder for <span id="periodeUtgiftNavn"></span></h3>
+                <button class="lukk-knapp" id="lukkPeriodeKnapp">&times;</button>
+            </header>
+            <div class="modal-innhold" id="manedsvelger"></div>
+            <footer class="modal-footer">
+                <button class="primar-knapp" id="lagrePeriodeKnapp">Lagre</button>
+            </footer>
+        </div>
+    </div>
+
     <nav class="mobil-meny" id="mobilMeny">
         <a href="#">Ofte stilte spørsmål</a>
         <a href="#">Om oss</a>

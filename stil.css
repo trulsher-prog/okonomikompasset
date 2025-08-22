@@ -14,6 +14,10 @@ body {
     background-color: #f0f0f0;
 }
 
+body.scroll-lock {
+  overflow: hidden; /* Dette er magien som forhindrer scrolling */
+}
+
 /* =================================================================== */
 /*  TOPPNAVIGASJON / HEADER
 /* =================================================================== */
@@ -34,24 +38,21 @@ body {
     justify-content: space-between;
 }
 
-/* 1. Wrapperen som holder alt sammen */
 .logo-wrapper {
-  display: flex;         /* Plasserer logo og tekst side-om-side */
-  align-items: center;   /* Sentrerer dem perfekt vertikalt */
-  gap: 12px;             /* Skaper luft mellom logo og tekst */
-  text-decoration: none; /* Fjerner standard understrek fra lenken */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
 }
 
-/* 2. Selve logo-bildet */
 .header-logo {
-  height: 40px; /* Juster denne for ønsket størrelse */
+    height: 40px;
 }
 
-/* 3. Logo-teksten */
 .logo-tekst {
-  color: #ffffff;
-  font-size: 22px;
-  font-weight: 600;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 /* =================================================================== */
@@ -240,12 +241,12 @@ h1 {
     min-height: 46px;
 }
 
-.checkbox-wrapper {
+.utgift-rad .checkbox-wrapper {
     display: flex;
     align-items: center;
+    flex-grow: 1;
 }
 
-/* CUSTOM CHECKBOXES KUN I UTGIFTSLISTENE */
 .utgift-rad .utgifts-checkbox {
     opacity: 0;
     position: absolute;
@@ -558,10 +559,10 @@ h1 {
 /* =================================================================== */
 .overlay {
     position: fixed;
-    top: 0;
+    top: 95px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 95px);
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
     display: flex;
@@ -602,18 +603,35 @@ h1 {
     max-width: 500px;
 }
 
+/* Felles stil for headere i overlays */
 .kalender-header,
 .modal-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
+    z-index: 1;
+}
+
+/* Unik stil for KUN kalender-headeren */
+.kalender-header {
+    position: sticky;
+    top: 0;
+    justify-content: center; /* Sentrerer tittelen */
+    position: relative; /* For å kunne posisjonere lukk-knappen */
+}
+
+/* Unik stil for KUN modal-headeren */
+.modal-header {
+    justify-content: space-between; /* Beholder den gamle stilen */
 }
 
 .modal-footer {
     padding: 15px 20px;
     border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .kalender-header h3,
@@ -627,6 +645,31 @@ h1 {
     font-size: 28px;
     cursor: pointer;
     color: #888;
+    position: absolute; /* Løsriver den fra flyten */
+    right: 15px; /* Plasserer den til høyre */
+    top: 50%; /* Justerer vertikalt */
+    transform: translateY(-50%); /* Perfekt vertikal sentrering */
+}
+
+/* Helt nye regler for navigasjons-kontrollene */
+.kalender-grid-wrapper {
+    /* Denne er foreløpig tom, men vi kan legge til stil her senere */
+}
+
+.navigasjons-kontroller {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Plasserer dem til høyre */
+    padding: 15px 20px; /* Gir luft rundt */
+    border-bottom: 1px solid #eee;
+}
+
+.navigasjons-kontroller select {
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
 }
 
 .kalender-innhold,
@@ -648,15 +691,6 @@ h1 {
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
-}
-
-.periode-visning {
-  font-size: 12px;
-  color: #888;
-  background-color: #f0f0f0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap; /* Forhindrer tekstbryting */
 }
 
 .forfall-label {
@@ -712,6 +746,80 @@ h1 {
 
 #manedsvelger .checkbox-wrapper {
     padding: 5px;
+}
+
+.kalender-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #ddd;
+}
+
+.kalender-dag {
+    background-color: #fff;
+    padding: 8px;
+    min-height: 100px;
+}
+
+.dag-nummer {
+    font-weight: bold;
+}
+
+.kalender-handlinger {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.kalender-grid-wrapper {
+    display: none;
+    /* Skjult som standard */
+}
+
+.kalender-grid-wrapper.vis {
+    display: block;
+    /* Vises med JS */
+}
+
+.navigasjons-kontroller {
+  display: flex;
+  gap: 10px;
+}
+.navigasjons-kontroller select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Stil for ukedagene */
+.kalender-dag.ukedag {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
+  min-height: auto; /* Overstyrer standard høyde */
+}
+
+/* Stil for hendelsene inni kalenderen */
+.hendelser-liste {
+  margin-top: 5px;
+}
+.hendelse {
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hendelse.inntekt {
+  background-color: #d4edda; /* Lys grønn */
+  color: #155724;
+}
+.hendelse.utgift {
+  background-color: #f8d7da; /* Lys rød */
+  color: #721c24;
 }
 
 /* =================================================================== */
