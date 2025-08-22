@@ -15,83 +15,179 @@ body {
 }
 
 /* =================================================================== */
-/*  TOPPNAVIGASJON / HEADER (FULL BREDDE)
+/*  TOPPNAVIGASJON / HEADER
 /* =================================================================== */
-
 .main-header {
-    /* Posisjonering og Størrelse */
     position: sticky;
     top: 5px;
-    z-index: 10;
+    z-index: 1000;
     width: 95%;
+    max-width: 1200px;
     height: 70px;
-    /* Høyden på stripen */
-
-    /* Utseende */
+    margin: 20px auto;
     background-color: #74c1f0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 0 40px;
-    /* Styrer luften fra skjermkant til innhold */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0 30px;
     border-radius: 9999px;
-    width: 95%;
-    /* Litt smalere enn skjermen */
-    max-width: 3648px;
-    /* Satt av meg for å være med opptil 4k*/
-    margin: 0 auto;
-    /* Sentrerer den horisontalt */
-
-    /* Flexbox for å plassere innholdet */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* Dytter de to barna til hver sin kant */
 }
 
-/* Tittelen i headeren */
-.header-title {
-    color: #ffffff;
-    font-size: 22px;
-    font-weight: 600;
+/* 1. Wrapperen som holder alt sammen */
+.logo-wrapper {
+  display: flex;         /* Plasserer logo og tekst side-om-side */
+  align-items: center;   /* Sentrerer dem perfekt vertikalt */
+  gap: 12px;             /* Skaper luft mellom logo og tekst */
+  text-decoration: none; /* Fjerner standard understrek fra lenken */
 }
 
+/* 2. Selve logo-bildet */
+.header-logo {
+  height: 40px; /* Juster denne for ønsket størrelse */
+}
+
+/* 3. Logo-teksten */
+.logo-tekst {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+}
 
 /* =================================================================== */
 /*  HOVEDLAYOUT
 /* =================================================================== */
-.app-container {
-    max-width: 500px;
-    margin: 40px auto;
-    /* Gir luft mellom header og innhold */
-    padding: 20px;
-}
-
 h1 {
     color: #005a9c;
     text-align: center;
     margin-bottom: 30px;
 }
 
-/* (Resten av koden er den samme) */
+.hoved-innhold {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
+}
+
+.app-container {
+    width: 100%;
+}
+
+.side-panel {
+    display: none;
+}
+
+/* =================================================================== */
+/*  PC-LAYOUT & SIDEPANELER
+/* =================================================================== */
+@media (min-width: 1100px) {
+    .hoved-innhold {
+        max-width: 1200px;
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        align-items: flex-start;
+    }
+
+    .app-container {
+        width: 500px;
+        flex-shrink: 0;
+        margin: 0;
+    }
+
+    .side-panel {
+        display: block;
+        width: 250px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 115px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .side-panel.vis {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .side-panel h4 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #005a9c;
+    }
+
+    .info-panel p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .panel-innhold {
+        display: none;
+    }
+
+    .panel-innhold.vis {
+        display: block;
+    }
+
+    .detalj-rad {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .detalj-input {
+        width: 100px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .summer-knapp {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .summer-knapp:hover {
+        background-color: #218838;
+    }
+}
 
 /* =================================================================== */
 /*  KOMPONENTER
 /* =================================================================== */
-
-#sparemalListe {
-  display: none; /* Skjult som standard */
-}
-
-#sparemalListe.vis {
-  display: block; /* Vises når klassen er til stede */
-}
-
-.input-boks {
+.input-boks,
+.oppsummering-boks {
     background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 8px;
     margin-bottom: 20px;
     padding: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.oppsummering-boks {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
 }
 
 .input-boks h3 {
@@ -103,7 +199,7 @@ h1 {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    font-size: 20px; /* <-- NY LINJE: Setter en fast skriftstørrelse */
+    font-size: 20px;
 }
 
 #inntektEtterSkatt {
@@ -111,38 +207,30 @@ h1 {
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 4px;
-}
-
-/* --- Stil for Oppsummeringsboks --- */
-.oppsummering-boks {
-  background-color: #f8f9fa; /* En veldig lys grå, nesten hvit */
-  border-radius: 8px;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  border: 1px solid #e9ecef; /* En veldig subtil kant */
+    font-size: 16px;
 }
 
 .oppsummering-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 16px;
 }
 
 .sum-verdi {
-  font-weight: 600; /* Halvfet */
+    font-weight: 600;
 }
 
 .oppsummering-item.total {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .oppsummering-skille {
-  border: none;
-  border-top: 1px solid #e0e0e0;
-  margin: 5px 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 5px 0;
 }
 
 .utgift-rad {
@@ -157,58 +245,55 @@ h1 {
     align-items: center;
 }
 
-.utgifts-checkbox {
-  opacity: 0;
-  position: absolute;
-  width: 0;
-  height: 0;
+/* CUSTOM CHECKBOXES KUN I UTGIFTSLISTENE */
+.utgift-rad .utgifts-checkbox {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
 }
 
-.checkbox-wrapper label {
-  position: relative;
-  padding-left: 35px; /* Gir plass til den nye boksen */
-  cursor: pointer;
-  line-height: 22px; /* Hjelper med vertikal justering */
-  display: inline-block;
-  user-select: none; /* Forhindrer at teksten markeres når man dobbeltklikker */
+.utgift-rad .checkbox-wrapper label {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    line-height: 22px;
+    display: inline-block;
+    user-select: none;
 }
 
-/* Selve boksen vi tegner */
-.checkbox-wrapper label::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 22px;
-  height: 22px;
-  background-color: #f0f0f0; /* Litt dusere enn helt hvit */
-  border: 2px solid #ccc;
-  border-radius: 6px; /* Lett avrundede hjørner */
-  transition: all 0.2s ease;
+.utgift-rad .checkbox-wrapper label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-/* Steg 3: Endre utseende NÅR den (usynlige) checkboxen er avkrysset */
-.utgifts-checkbox:checked + label::before {
-  background-color: #007bff;
-  border-color: #007bff;
+.utgift-rad .utgifts-checkbox:checked+label::before {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-/* Tegner selve haken (√) inni boksen */
-.utgifts-checkbox:checked + label::after {
-  content: '';
-  position: absolute;
-  left: 8px;
-  top: 4px;
-  width: 6px;
-  height: 12px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
+.utgift-rad .utgifts-checkbox:checked+label::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
 }
 
-/* Bonus: En hover-effekt */
-.checkbox-wrapper label:hover::before {
-  border-color: #007bff;
+.utgift-rad .checkbox-wrapper label:hover::before {
+    border-color: #007bff;
 }
 
 .input-wrapper {
@@ -226,32 +311,36 @@ h1 {
     border: 1px solid #cccccc;
     border-radius: 4px;
     text-align: right;
+    font-size: 16px;
 }
 
 .legg-til-knapp {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px; /* Luft opp til listen */
-  background: none;
-  border: 2px dashed #ccc; /* Stiplet ramme for å indikere "legg til" */
-  color: #888;
-  font-family: 'Poppins', sans-serif; /* Sørger for at den bruker riktig font */
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: none;
+    border: 2px dashed #ccc;
+    color: #888;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .legg-til-knapp:hover {
-  background-color: #f9f9f9;
-  border-color: #aaa;
-  color: #333;
+    background-color: #f9f9f9;
+    border-color: #aaa;
+    color: #333;
 }
 
-.knappe-container {}
+.knappe-container {
+    /* Tom */
+}
 
+.primar-knapp,
 #beregnKnapp {
     width: 100%;
     padding: 15px;
@@ -275,26 +364,130 @@ h1 {
 }
 
 .sekundaer-knapp {
-  margin-top: 10px; /* Litt luft opp til den primære knappen */
-  background: none; /* Ingen bakgrunnsfarge */
-  border: 2px solid #ccc; /* En dus grå ramme */
-  color: #555; /* Mørk grå tekst */
- /* NY LINJE: Legger til luft mellom tekst og ramme */
-  padding: 13px; /* Hovedknappen har 15px, så 13px her ser pent ut */
-
-  /* NY LINJE: Runder av hjørnene, likt som hovedknappen */
-  border-radius: 8px; 
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    background: none;
+    border: 2px solid #ccc;
+    color: #555;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .sekundaer-knapp:hover {
-  background-color: #f0f0f0; /* Lys grå bakgrunn når man holder over */
-  border-color: #aaa;
+    background-color: #f0f0f0;
+    border-color: #aaa;
 }
 
 #resultat {
     text-align: center;
     font-size: 24px;
     margin-top: 30px;
+    font-weight: bold;
+}
+
+#sparemalListe {
+    display: none;
+}
+
+#sparemalListe.vis {
+    display: block;
+}
+
+.resterende-wrapper {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#resterendeProsent {
+    font-size: 24px;
+    font-weight: 700;
+    color: #007bff;
+    margin-left: 10px;
+}
+
+.slider-rad {
+    display: grid;
+    grid-template-columns: 1fr 2fr 80px;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.slider-rad label {
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.verdi-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.slider-verdi {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.slider-nok-verdi {
+    font-size: 12px;
+    color: #666;
+}
+
+.fordeling-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    outline: none;
+    border-radius: 5px;
+}
+
+.fordeling-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.fordeling-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+}
+
+.fordeling-oppsummering {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.fordeling-oppsummering h4 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.oppsummering-rad {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 16px;
+}
+
+.oppsummering-nok-verdi {
     font-weight: bold;
 }
 
@@ -333,7 +526,6 @@ h1 {
     transform: translateY(-8px) rotate(-45deg);
 }
 
-/* --- Stil for selve meny-panelet --- */
 .mobil-meny {
     position: fixed;
     top: 0;
@@ -361,108 +553,165 @@ h1 {
     padding: 15px 0;
 }
 
-/* stil.css */
-.resterende-wrapper {
-  text-align: center;
-  margin-bottom: 25px; /* God avstand ned til sliderne */
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee; /* En subtil skillelinje */
+/* =================================================================== */
+/*  KALENDER-OVERLAY & MODAL
+/* =================================================================== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-#resterendeProsent {
-  font-size: 24px;
-  font-weight: 700; /* Bold */
-  color: #007bff; /* Samme blåfarge som knappen */
-  margin-left: 10px;
+.overlay.vis {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* --- Stil for fordelings-sliderne --- */
-.slider-rad {
-  display: grid;
-  /* Justert for å gi mer plass til verdiene */
-  grid-template-columns: 1fr 2fr 80px; 
-  align-items: center;
-  margin-bottom: 20px;
-  gap: 15px;
+.kalender-container,
+.modal-container {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
 }
 
-.slider-rad label {
-  font-weight: normal;
-  font-size: 15px; /* Litt mindre tekst for å få plass */
+.overlay.vis .kalender-container,
+.overlay.vis .modal-container {
+    transform: scale(1);
 }
 
-/* NY: Wrapper for prosent og kroner */
-.verdi-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.kalender-container {
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.slider-verdi {
-  font-weight: bold;
-  font-size: 18px;
+.modal-container {
+    max-width: 500px;
 }
 
-/* NY: Stil for kronebeløpet */
-.slider-nok-verdi {
+.kalender-header,
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+.kalender-header h3,
+.modal-header h3 {
+    margin: 0;
+}
+
+.lukk-knapp {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #888;
+}
+
+.kalender-innhold,
+.modal-innhold {
+    padding: 20px;
+}
+
+.kalender-intro {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.forfall-rad {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.periode-visning {
   font-size: 12px;
-  color: #666; /* En litt lysere gråfarge */
+  color: #888;
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap; /* Forhindrer tekstbryting */
 }
 
-/* Felles stil for alle slidere */
-.fordeling-slider {
-  -webkit-appearance: none; /* Fjerner standard utseende på Webkit (Chrome/Safari) */
-  appearance: none;
-  width: 100%;
-  height: 8px;
-  background: #ddd; /* Fargen på sporet */
-  outline: none;
-  border-radius: 5px;
+.forfall-label {
+    flex-grow: 1;
 }
 
-/* Stil for "håndtaket" på slideren (for Chrome/Safari) */
-.fordeling-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: #007bff; /* Samme blåfarge som knappen */
-  cursor: pointer;
-  border-radius: 50%;
+.forfall-belop {
+    color: #666;
+    font-size: 0.9em;
+    margin-left: 8px;
 }
 
-/* Stil for "håndtaket" på slideren (for Firefox) */
-.fordeling-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #007bff;
-  cursor: pointer;
-  border-radius: 50%;
-  border: none;
+.forfall-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* --- Stil for fordelingsoppsummeringen --- */
-.fordeling-oppsummering {
-  margin-top: 30px; /* God avstand fra sliderne */
-  padding-top: 20px;
-  border-top: 2px solid #f0f0f0; /* En tydelig skillelinje */
+.forfall-dato-input {
+    width: 60px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-.fordeling-oppsummering h4 {
-  margin-bottom: 15px;
-  font-weight: 600;
-  color: #333;
+.periodisering-knapp {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 12px;
 }
 
-.oppsummering-rad {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  font-size: 16px;
+.forfall-liste h4 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #007bff;
+    color: #005a9c;
 }
 
-.oppsummering-nok-verdi {
-  font-weight: bold;
+.forfall-liste h4:first-child {
+    margin-top: 0;
+}
+
+#manedsvelger {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+#manedsvelger .checkbox-wrapper {
+    padding: 5px;
 }
 
 /* =================================================================== */
@@ -480,7 +729,7 @@ h1 {
     }
 }
 
-.app-container {
+.hoved-innhold {
     animation-name: fadeInUp;
     animation-duration: 0.7s;
     animation-fill-mode: both;
@@ -491,36 +740,29 @@ h1 {
 /* =================================================================== */
 /*  MOBIL-RESPONSIVITET
 /* =================================================================== */
+@media (max-width: 1099px) {
+    .hoved-innhold {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
 
-/* Regler som kun gjelder for skjermer som er 600px brede eller smalere */
-@media (max-width: 600px) {
-  
-  /* Reduserer luften over og under hoved-appen */
-  .app-container {
-    margin: 20px auto;
-    padding: 15px; /* Litt mindre padding på sidene også */
-  }
-  
-  /* Gjør hovedoverskriften mer kompakt */
-  h1 {
-    font-size: 26px; /* Mindre skrift */
-    margin-bottom: 25px; /* Litt mindre luft under */
-  }
+    .app-container {
+        padding: 0;
+    }
 
-  /* Juster headeren for en smalere skjerm */
-  .main-header {
-    height: 60px; /* Litt lavere header */
-    padding: 0 20px; /* Mindre luft på sidene */
-  }
+    h1 {
+        font-size: 26px;
+        margin-bottom: 25px;
+    }
 
-  .header-title {
-    font-size: 18px; /* Mindre tittel i headeren */
-  }
+    .main-header {
+        height: 60px;
+        padding: 0 20px;
+        width: calc(100% - 20px);
+        top: 10px;
+    }
 
- /* NY REGEL: Forhindrer auto-zoom på iPhone ved å sette font-size til 16px */
-  .utgifts-input,
-  #inntektEtterSkatt {
-    font-size: 16px;
-  }
-
+    .header-title {
+        font-size: 18px;
+    }
 }

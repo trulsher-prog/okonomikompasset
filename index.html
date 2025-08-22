@@ -8,260 +8,272 @@
 </head>
 
 <body>
-
     <header class="main-header">
-        <h2 class="header-title">Økonomikompasset</h2>
+        <!-- NY LOGO-WRAPPER -->
+        <a href="#" class="logo-wrapper">
+            <img src="logo.svg" alt="Økonomikompasset logo" class="header-logo">
+            <span class="logo-tekst">Økonomikompasset</span>
+        </a>
         <button class="hamburger-meny" id="hamburgerKnapp">
-            <span class="linje"></span>
-            <span class="linje"></span>
-            <span class="linje"></span>
+            <span class="linje"></span><span class="linje"></span><span class="linje"></span>
         </button>
     </header>
 
-    <div class="app-container">
-        <h1>Få kontroll. Sett din kurs.</h1>
+    <main class="hoved-innhold">
+        <aside class="side-panel info-panel" id="infoPanel"></aside>
 
-        <!-- Boks for inntekt -->
-        <div class="input-boks">
-            <label for="inntektEtterSkatt">Inntekt etter skatt</label>
-            <input type="number" id="inntektEtterSkatt" placeholder="f.eks. 35000">
+        <div class="app-container">
+            <h1>Få kontroll. Sett din kurs.</h1>
+            <div class="input-boks">
+                <label for="inntektEtterSkatt">Inntekt etter skatt</label>
+                <input type="number" id="inntektEtterSkatt" placeholder="f.eks. 35000">
+            </div>
+            <div class="oppsummering-boks">
+                <div class="oppsummering-item"><span>Faste utgifter:</span><span id="sumFaste" class="sum-verdi">0
+                        kr</span></div>
+                <div class="oppsummering-item"><span>Variable utgifter:</span><span id="sumVariable" class="sum-verdi">0
+                        kr</span></div>
+                <hr class="oppsummering-skille">
+                <div class="oppsummering-item total"><span>Totale utgifter:</span><span id="sumTotal"
+                        class="sum-verdi">0 kr</span></div>
+            </div>
+            <div class="input-boks" id="utgiftsListe">
+                <h3>Velg dine faste utgifter</h3>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkHusleie" class="utgifts-checkbox"
+                            data-target="utgiftHusleie"><label for="checkHusleie">Husleie / Boliglån</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftHusleie" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkBillan" class="utgifts-checkbox"
+                            data-target="utgiftBillan"><label for="checkBillan">Billån</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftBillan" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkForbrukslan" class="utgifts-checkbox"
+                            data-target="utgiftForbrukslan"><label for="checkForbrukslan">Forbrukslån</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftForbrukslan" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkLanekassen" class="utgifts-checkbox"
+                            data-target="utgiftLanekassen"><label for="checkLanekassen">Lånekassen</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftLanekassen" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkBarnehage" class="utgifts-checkbox"
+                            data-target="utgiftBarnehage"><label for="checkBarnehage">Barnehage</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftBarnehage" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkSfo" class="utgifts-checkbox"
+                            data-target="utgiftSfo"><label for="checkSfo">SFO</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftSfo" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkKommunale" class="utgifts-checkbox"
+                            data-target="utgiftKommunale"><label for="checkKommunale">Kommunale avgifter</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftKommunale" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkForsikring" class="utgifts-checkbox"
+                            data-target="utgiftForsikring"><label for="checkForsikring">Forsikringer (Sum)</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftForsikring" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkInternett" class="utgifts-checkbox"
+                            data-target="utgiftInternett"><label for="checkInternett">Internett</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftInternett" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkTv" class="utgifts-checkbox"
+                            data-target="utgiftTv"><label for="checkTv">TV</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftTv" class="utgifts-input" placeholder="0">
+                    </div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkMobil" class="utgifts-checkbox"
+                            data-target="utgiftMobil"><label for="checkMobil">Mobil</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftMobil" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkMedlemskap" class="utgifts-checkbox"
+                            data-target="utgiftMedlemskap"><label for="checkMedlemskap">Medlemskap/Abo (Sum)</label>
+                    </div>
+                    <div class="input-wrapper"><input type="number" id="utgiftMedlemskap" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkKollektiv" class="utgifts-checkbox"
+                            data-target="utgiftKollektiv"><label for="checkKollektiv">Kollektivtransport</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftKollektiv" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <button class="legg-til-knapp" id="leggTilFastUtgift">+ Legg til egen utgift</button>
+            </div>
+            <div class="input-boks" id="variabelUtgiftsListe">
+                <h3>Velg dine variable utgifter</h3>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkMat" class="utgifts-checkbox"
+                            data-target="utgiftMat"><label for="checkMat">Mat</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftMat" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkHusholdning" class="utgifts-checkbox"
+                            data-target="utgiftHusholdning"><label for="checkHusholdning">Husholdningsartikler</label>
+                    </div>
+                    <div class="input-wrapper"><input type="number" id="utgiftHusholdning" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkStrom" class="utgifts-checkbox"
+                            data-target="utgiftStrom"><label for="checkStrom">Strøm</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftStrom" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkDrivstoff" class="utgifts-checkbox"
+                            data-target="utgiftDrivstoff"><label for="checkDrivstoff">Drivstoff / Bompenger</label>
+                    </div>
+                    <div class="input-wrapper"><input type="number" id="utgiftDrivstoff" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <div class="utgift-rad">
+                    <div class="checkbox-wrapper"><input type="checkbox" id="checkKlarogutstyr" class="utgifts-checkbox"
+                            data-target="utgiftklarogutstyr"><label for="checkKlarogutstyr">Klær og Utstyr</label></div>
+                    <div class="input-wrapper"><input type="number" id="utgiftklarogutstyr" class="utgifts-input"
+                            placeholder="0"></div>
+                </div>
+                <button class="legg-til-knapp" id="leggTilVariabelUtgift">+ Legg til egen utgift</button>
+            </div>
+            <div class="knappe-container">
+                <button id="beregnKnapp" class="primar-knapp">Beregn overskudd</button>
+                <button id="tomSkjemaKnapp" class="sekundaer-knapp">Tøm skjema</button>
+            </div>
+            <h2 id="resultat"></h2>
+            <div class="input-boks" id="sparemalListe">
+                <h3>Fordel ditt overskudd</h3>
+                <div class="resterende-wrapper"><span>Resterende å fordele:</span><span
+                        id="resterendeProsent">100%</span></div>
+                <div class="slider-rad"><label for="sliderKortPersonlig">Kortsiktig (Personlig)</label><input
+                        type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="slider-rad"><label for="sliderLangPersonlig">Langsiktig (Personlig)</label><input
+                        type="range" id="sliderLangPersonlig" class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="slider-rad"><label for="sliderKortFamilie">Kortsiktig (Familie)</label><input type="range"
+                        id="sliderKortFamilie" class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="slider-rad"><label for="sliderLangFamilie">Langsiktig (Familie)</label><input type="range"
+                        id="sliderLangFamilie" class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="slider-rad"><label for="sliderBuffer">Buffer</label><input type="range" id="sliderBuffer"
+                        class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="slider-rad"><label for="sliderGjeld">Ekstra nedb. gjeld</label><input type="range"
+                        id="sliderGjeld" class="fordeling-slider" min="0" max="100" value="0">
+                    <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
+                            kr</span></div>
+                </div>
+                <div class="fordeling-oppsummering">
+                    <h4>Basert på din fordeling vil du sette av:</h4>
+                    <div class="oppsummering-rad"><span>Kortsiktig (Personlig)</span><span
+                            class="oppsummering-nok-verdi" data-target-slider="sliderKortPersonlig">0 kr</span></div>
+                    <div class="oppsummering-rad"><span>Langsiktig (Personlig)</span><span
+                            class="oppsummering-nok-verdi" data-target-slider="sliderLangPersonlig">0 kr</span></div>
+                    <div class="oppsummering-rad"><span>Kortsiktig (Familie)</span><span class="oppsummering-nok-verdi"
+                            data-target-slider="sliderKortFamilie">0 kr</span></div>
+                    <div class="oppsummering-rad"><span>Langsiktig (Familie)</span><span class="oppsummering-nok-verdi"
+                            data-target-slider="sliderLangFamilie">0 kr</span></div>
+                    <div class="oppsummering-rad"><span>Buffer</span><span class="oppsummering-nok-verdi"
+                            data-target-slider="sliderBuffer">0 kr</span></div>
+                    <div class="oppsummering-rad"><span>Ekstra nedb. gjeld</span><span class="oppsummering-nok-verdi"
+                            data-target-slider="sliderGjeld">0 kr</span></div>
+                </div>
+            </div>
+            <button class="primar-knapp" id="visKalenderKnapp" style="margin-top: 20px;">Vis prognose i
+                kalender</button>
         </div>
 
-        <!-- OPPSUMMERINGSBOKS -->
-        <div class="oppsummering-boks">
-            <div class="oppsummering-item">
-                <span>Faste utgifter:</span>
-                <span id="sumFaste" class="sum-verdi">0 kr</span>
+        <aside class="side-panel detalj-panel" id="detaljPanel">
+            <div class="panel-innhold" id="forsikringPanel">
+                <h4>Spesifiser forsikringer</h4>
+                <div class="detalj-rad"><label>Hus / Innbo</label><input type="number" class="detalj-input"
+                        placeholder="0"></div>
+                <div class="detalj-rad"><label>Bil</label><input type="number" class="detalj-input" placeholder="0">
+                </div>
+                <div class="detalj-rad"><label>Reise</label><input type="number" class="detalj-input" placeholder="0">
+                </div>
+                <div class="detalj-rad"><label>Ulykke / Skade</label><input type="number" class="detalj-input"
+                        placeholder="0"></div>
+                <button class="summer-knapp" id="summerForsikringKnapp">Bruk sum</button>
             </div>
-            <div class="oppsummering-item">
-                <span>Variable utgifter:</span>
-                <span id="sumVariable" class="sum-verdi">0 kr</span>
+        </aside>
+    </main>
+
+    <div class="overlay" id="kalenderOverlay">
+        <div class="kalender-container">
+            <header class="kalender-header">
+                <h3>Månedsoversikt</h3>
+                <button class="lukk-knapp" id="lukkKalenderKnapp">&times;</button>
+            </header>
+            <div class="kalender-innhold">
+                <p class="kalender-intro">
+                    Snart klar! Legg inn forfallsdato for dine faste inntekter og utgifter.
+                </p>
+
+                <div class="forfall-liste" id="forfallListe">
+                    <!-- Forfallsrader vil bli generert her av JavaScript -->
+                </div>
+
             </div>
-            <hr class="oppsummering-skille">
-            <div class="oppsummering-item total">
-                <span>Totale utgifter:</span>
-                <span id="sumTotal" class="sum-verdi">0 kr</span>
+
+            <div class="kalender-grid" id="kalenderGrid">
+                <!-- Kalenderen kommer senere -->
+            </div>
+        </div>
+        <!-- NYTT OVERLAY FOR PERIODISERING -->
+        <div class="overlay" id="periodeOverlay">
+            <div class="modal-container">
+                <header class="modal-header">
+                    <h3>Velg måneder for <span id="periodeUtgiftNavn"></span></h3>
+                    <button class="lukk-knapp" id="lukkPeriodeKnapp">&times;</button>
+                </header>
+                <div class="modal-innhold" id="manedsvelger">
+                    <!-- Måneds-checkboxer vil bli generert her -->
+                </div>
+                <footer class="modal-footer">
+                    <button class="primar-knapp" id="lagrePeriodeKnapp">Lagre</button>
+                </footer>
             </div>
         </div>
 
-        <!-- Boks for faste utgifter -->
-        <div class="input-boks" id="utgiftsListe">
-            <h3>Velg dine faste utgifter</h3>
-            <!-- ... (all din eksisterende, korrekte kode for faste utgifter) ... -->
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkHusleie" class="utgifts-checkbox"
-                        data-target="utgiftHusleie"><label for="checkHusleie">Husleie / Boliglån</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftHusleie" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkBillan" class="utgifts-checkbox"
-                        data-target="utgiftBillan"><label for="checkBillan">Billån</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftBillan" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkForbrukslan" class="utgifts-checkbox"
-                        data-target="utgiftForbrukslan"><label for="checkForbrukslan">Forbrukslån</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftForbrukslan" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkLanekassen" class="utgifts-checkbox"
-                        data-target="utgiftLanekassen"><label for="checkLanekassen">Lånekassen</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftLanekassen" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkBarnehage" class="utgifts-checkbox"
-                        data-target="utgiftBarnehage"><label for="checkBarnehage">Barnehage</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftBarnehage" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkSfo" class="utgifts-checkbox"
-                        data-target="utgiftSfo"><label for="checkSfo">SFO</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftSfo" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkKommunale" class="utgifts-checkbox"
-                        data-target="utgiftKommunale"><label for="checkKommunale">Kommunale avgifter</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftKommunale" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkForsikring" class="utgifts-checkbox"
-                        data-target="utgiftForsikring"><label for="checkForsikring">Forsikringer (Sum)</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftForsikring" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkInternett" class="utgifts-checkbox"
-                        data-target="utgiftInternett"><label for="checkInternett">Internett</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftInternett" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkTv" class="utgifts-checkbox"
-                        data-target="utgiftTv"><label for="checkTv">TV</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftTv" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkMobil" class="utgifts-checkbox"
-                        data-target="utgiftMobil"><label for="checkMobil">Mobil</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftMobil" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <!-- NY POST: Medlemskap -->
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="checkMedlemskap" class="utgifts-checkbox" data-target="utgiftMedlemskap">
-                    <label for="checkMedlemskap">Medlemskap/Abo (Sum)</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="utgiftMedlemskap" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-
-            <!-- NY POST: Kollektivtransport -->
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="checkKollektiv" class="utgifts-checkbox" data-target="utgiftKollektiv">
-                    <label for="checkKollektiv">Kollektivtransport</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="utgiftKollektiv" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <button class="legg-til-knapp" id="leggTilFastUtgift">+ Legg til egen utgift</button>
-        </div>
-
-        <!-- Boks for variable utgifter -->
-        <div class="input-boks" id="variabelUtgiftsListe">
-            <h3>Velg dine variable utgifter</h3>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkMat" class="utgifts-checkbox"
-                        data-target="utgiftMat"><label for="checkMat">Mat</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftMat" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkHusholdning" class="utgifts-checkbox"
-                        data-target="utgiftHusholdning"><label for="checkHusholdning">Husholdningsartikler</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftHusholdning" class="utgifts-input"
-                        placeholder="0"></div>
-            </div>
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper"><input type="checkbox" id="checkStrom" class="utgifts-checkbox"
-                        data-target="utgiftStrom"><label for="checkStrom">Strøm</label></div>
-                <div class="input-wrapper"><input type="number" id="utgiftStrom" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <!-- NY POST: Drivstoff -->
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="checkDrivstoff" class="utgifts-checkbox" data-target="utgiftDrivstoff">
-                    <label for="checkDrivstoff">Drivstoff / Bompenger</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="utgiftDrivstoff" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <!-- NY POST: Klær og utstyr -->
-            <div class="utgift-rad">
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="checkKlarogutstyr" class="utgifts-checkbox" data-target="utgiftklarogutstyr">
-                    <label for="checkKlarogutstyr">Klær og Utstyr</label>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="utgiftklarogutstyr" class="utgifts-input" placeholder="0">
-                </div>
-            </div>
-            <button class="legg-til-knapp" id="leggTilVariabelUtgift">+ Legg til egen utgift</button>
-        </div>
-
-        <!-- Knapper og resultat -->
-        <div class="knappe-container">
-            <button id="beregnKnapp">Beregn overskudd</button>
-            <button id="tomSkjemaKnapp" class="sekundaer-knapp">Tøm skjema</button>
-        </div>
-        <h2 id="resultat"></h2>
-
-        <!-- Boks for sparing og fordeling -->
-        <div class="input-boks" id="sparemalListe">
-            <h3>Fordel ditt overskudd</h3>
-            <div class="resterende-wrapper">
-                <span>Resterende å fordele:</span>
-                <span id="resterendeProsent">100%</span>
-            </div>
-
-            <!-- KORRIGERT SLIDER-SEKSJON -->
-            <div class="slider-rad">
-                <label for="sliderKortPersonlig">Kortsiktig (Personlig)</label>
-                <input type="range" id="sliderKortPersonlig" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-            <div class="slider-rad">
-                <label for="sliderLangPersonlig">Langsiktig (Personlig)</label>
-                <input type="range" id="sliderLangPersonlig" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-            <div class="slider-rad">
-                <label for="sliderKortFamilie">Kortsiktig (Familie)</label>
-                <input type="range" id="sliderKortFamilie" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-            <div class="slider-rad">
-                <label for="sliderLangFamilie">Langsiktig (Familie)</label>
-                <input type="range" id="sliderLangFamilie" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-            <div class="slider-rad">
-                <label for="sliderBuffer">Buffer</label>
-                <input type="range" id="sliderBuffer" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-            <div class="slider-rad">
-                <label for="sliderGjeld">Ekstra nedb. gjeld</label>
-                <input type="range" id="sliderGjeld" class="fordeling-slider" min="0" max="100" value="0">
-                <div class="verdi-wrapper"><span class="slider-verdi">0%</span><span class="slider-nok-verdi">0
-                        kr</span></div>
-            </div>
-
-            <!-- KORRIGERT OPPSUMMERINGS-SEKSJON -->
-            <div class="fordeling-oppsummering">
-                <h4>Basert på din fordeling vil du sette av:</h4>
-                <div class="oppsummering-rad"><span>Kortsiktig (Personlig)</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderKortPersonlig">0 kr</span></div>
-                <div class="oppsummering-rad"><span>Langsiktig (Personlig)</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderLangPersonlig">0 kr</span></div>
-                <div class="oppsummering-rad"><span>Kortsiktig (Familie)</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderKortFamilie">0 kr</span></div>
-                <div class="oppsummering-rad"><span>Langsiktig (Familie)</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderLangFamilie">0 kr</span></div>
-                <div class="oppsummering-rad"><span>Buffer</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderBuffer">0 kr</span></div>
-                <div class="oppsummering-rad"><span>Ekstra nedb. gjeld</span><span class="oppsummering-nok-verdi"
-                        data-target-slider="sliderGjeld">0 kr</span></div>
-            </div>
-        </div>
-
-    </div> <!-- app-container slutter her -->
-
+    </div>
     <nav class="mobil-meny" id="mobilMeny">
         <a href="#">Ofte stilte spørsmål</a>
         <a href="#">Om oss</a>
     </nav>
-
     <script src="script.js"></script>
-
 </body>
 
 </html>
